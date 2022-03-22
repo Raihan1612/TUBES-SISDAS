@@ -43,21 +43,39 @@ def Tetangga():
         convert_huruf = huruf + '1'
         worksheet.write(convert_huruf, 'N'+str(no_col))
 
+    next_coloumn = 0
+    m = n
+    next_huruf = 0
     for row in range(2,n+2,1):
         temp_coloumn = 0
-        for coloumn in range(65,65+n,1):
-            huruf = chr(coloumn+1)
+        next_huruf2 = next_huruf
+        x = 0
+        for coloumn in range(65,65+m,1):
+            #print(temp_coloumn)
+            huruf = chr(coloumn+next_coloumn+1)
+            huruf2 = chr(coloumn-next_huruf2+1)
+            #print(row)
+            #print(x)
+            next_huruf2 += 1
+            #print(coloumn+1)
             convert_huruf = huruf + str(row)
+            convert_huruf2 = huruf2 + str(row+x)
             hasil_random = random.choice([0,1])
             if hasil_random == 1:
                 temp_coloumn += 1
-                if temp_coloumn <= 5:
+                if temp_coloumn <= 10:
                     worksheet.write(convert_huruf, hasil_random)
+                    worksheet.write(convert_huruf2, hasil_random)
                 else:
                     worksheet.write(convert_huruf, 0)
+                    worksheet.write(convert_huruf2, 0)
             else:
                 worksheet.write(convert_huruf, hasil_random)
-
+                worksheet.write(convert_huruf2, hasil_random)
+            x += 1
+        next_huruf -= 1
+        next_coloumn += 1
+        m-=1
     data = load_workbook("Tetangga.xlsx")
     sheet = data.active
 
