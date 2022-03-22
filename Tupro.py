@@ -54,7 +54,7 @@ def Tetangga():
 
 
 if __name__== "__main__":
-    print("test")
+    #test
     #Menjalankan Input n
     n = int(input("Masukkan rentang 10..20 : "))
     while (n < 10) or (n > 20):
