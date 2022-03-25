@@ -3,13 +3,18 @@ import random
 import xlsxwriter
 
 def ProgramNode():
+    #Membuat File Excel
     workbook = xlsxwriter.Workbook("Node.xlsx")
+    #Membuat Sheet Excel
     worksheet = workbook.add_worksheet('Node')
+    
+    #Mengisi Label Kolom dan Baris
     worksheet.write('A1', 'No')
     worksheet.write('B1', 'Label')
     worksheet.write('C1', 'X')
     worksheet.write('D1', 'Y')
     
+    #Mengisi hasil x dan y
     for row in range(n):
         no = row+1
         label = no
@@ -24,6 +29,7 @@ def ProgramNode():
         
         print(no, convert_label, x, y)
 
+    
     workbook.close()
 
 def Tetangga():
