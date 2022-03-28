@@ -108,40 +108,96 @@ def Tetangga():
     4 1 1 1 1 1
     5 1 1 1 1 1
     '''
-    #i = 0
-    #while i<n :  
-    #    print("N",i+1," = ",arr[i])
-     #   i+=1
-    #data = load_workbook("Tetangga.xlsx")
-    #sheet = data.active
 
-    '''
-
-    for coloumn in range(65,65+n,1):
-        temp_row=0
-        for row in range(2,n+2,1):
-            huruf = chr(coloumn+1)
-            convert_angka = huruf + str(row)
-            nilai = sheet[convert_angka]
-            if nilai.value == 1:
-                temp_row += 1
-                if temp_row == 5:
-                    worksheet.write(convert_huruf, 0)
-
-    
-    for row in range(2,n+2,1):
-        temp_coloumn = 0
-        for coloumn in range(65,65+n,1):
-            huruf = chr(coloumn+1)
-            convert_huruf = huruf + str(row)
-            nilai = sheet[convert_huruf]
-            if nilai.value == 0:
-                temp_coloumn += 1
-                if temp_coloumn == 8:
-                    sheet[convert_huruf] = 0
-    '''
     workbook.close()
 
+def Bobot():
+    workbook = xlsxwriter.Workbook("Bobot.xlsx")
+    worksheet = workbook.add_worksheet('Bobot')
+    
+    huruf = 'A'
+
+    #membuat baris pertama
+    for row in range(n):
+        no_row = row+1
+        convert_angka = 'N'+str(no_row)
+        worksheet.write('A'+str(no_row+1), convert_angka) 
+    
+    #membuat kolom pertama
+    for coloumn in range(n):
+        no_col = coloumn+1
+        huruf = chr(ord(huruf)+1)
+        convert_huruf = huruf + '1'
+        worksheet.write(convert_huruf, 'N'+str(no_col))
+
+    workbook.close()
+
+    bobot_workbook = load_workbook(filename="Bobot.xlsx")
+    bobot_workbook.sheetnames
+    bobot_sheet = bobot_workbook.active
+
+    tetangga_workbook = load_workbook(filename="Tetangga.xlsx")
+    tetangga_workbook.sheetnames
+    tetangga_sheet = tetangga_workbook.active
+
+    """
+    sheet["B2"] = "Contoh"
+    print(sheet["B2"].value)
+    """
+    
+    next_coloumn = 0
+    m = n
+    next_huruf = 0
+    z = 0
+    for row in range(2,n+2,1):
+        next_huruf2 = next_huruf
+        x = 0
+        y = z
+        for coloumn in range(65,65+m,1):
+            huruf = chr(coloumn+next_coloumn+1)
+            huruf2 = chr(coloumn-next_huruf2+1)
+            next_huruf2 += 1
+            convert_huruf = huruf + str(row)
+            convert_huruf2 = huruf2 + str(row+x)
+            if tetangga_sheet[convert_huruf] == 1:
+                temp_angka1 = ord(huruf) - 65
+                temp_angka2 = ord(huruf2) - 65
+                temp_label1 = "N" + str(temp_angka1)
+                temp_label2 = "N" + str(temp_angka2)
+
+                bobot_sheet[convert_huruf] = fungsi_jarak(temp_label1, temp_label2)
+                bobot_sheet[convert_huruf2] = fungsi_jarak(temp_label1, temp_label2)              
+            else:
+                bobot_sheet[convert_huruf] = 0
+                bobot_sheet[convert_huruf2] = 0
+                
+            y += 1
+            x += 1
+        next_huruf -= 1
+        next_coloumn += 1
+        m-=1
+        z+=1
+
+    bobot_workbook.save(filename="Bobot.xlsx")
+
+def fungsi_jarak(label1,label2):
+    node_workbook = load_workbook(filename="Node.xlsx")
+    node_workbook.sheetnames
+    node_sheet = node_workbook.active
+
+    for baris in range(2,11,1):
+        temp_label = "B" + str(baris)
+        if node_sheet[temp_label] == label1:
+            x1 = node_sheet["C" + str(label1)]
+            y1 = node_sheet["D" + str(label1)]
+        elif node_sheet[temp_label] == label2:
+            x2 = node_sheet["C" + str(label2)]
+            y2 = node_sheet["D" + str(label2)]
+
+    print(x1,y1,x2,y2)
+    hasil = sqrt((x2-x1)**2+(y2-y1)**2)
+    return hasil    
+    
 
 if __name__== "__main__":
     
@@ -154,3 +210,4 @@ if __name__== "__main__":
     
     ProgramNode()
     Tetangga()
+    Bobot()
