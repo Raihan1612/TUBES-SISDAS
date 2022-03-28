@@ -33,6 +33,7 @@ def ProgramNode():
     workbook.close()
 
 def Tetangga():
+    #Menginisialisasi File Tetangga.xlsx
     workbook = xlsxwriter.Workbook("Tetangga.xlsx")
     worksheet = workbook.add_worksheet('Tetangga')
     
@@ -49,51 +50,64 @@ def Tetangga():
         convert_huruf = huruf + '1'
         worksheet.write(convert_huruf, 'N'+str(no_col))
 
-    arr = [0] * n
+    #Mengenerate ketetanggaan
+    #Variabel yang dibutuhkan
+    arr = [0] * n 
     next_coloumn = 0
-    m = n
+    n_loop = n
     next_huruf = 0
-    z = 0
+    node_arr = 0
+    #For Loop Untuk Row
     for row in range(2,n+2,1):
         temp_coloumn = 0
         next_huruf2 = next_huruf
-        x = 0
-        y = z
-        for coloumn in range(65,65+m,1):
-            #print(temp_coloumn)
-            #print(arr[z])
-            #while arr[z] < 3:
+        row_copy = 0
+        node_itr = node_arr
+        #For Loop Untuk Column
+        for coloumn in range(65,65+n_loop,1):
             huruf = chr(coloumn+next_coloumn+1)
-            huruf2 = chr(coloumn-next_huruf2+1)
-            #print(row)
-            #print(x)
+            huruf2 = chr(coloumn-next_huruf2+1) #Penjelasan Penggunaan Huruf2 Ada Di Bawah
             next_huruf2 += 1
-            #print(coloumn+1)
             convert_huruf = huruf + str(row)
-            convert_huruf2 = huruf2 + str(row+x)
+            convert_huruf2 = huruf2 + str(row+row_copy)
             hasil_random = random.choice([0,1])
-            #print(x+1,arr[x])
+            #Pengecekan Kondisi Apakah Hasil Random adalah 1
             if hasil_random == 1:
                 temp_coloumn += 1
-                if temp_coloumn <= 5 - arr[z] and arr[z]<5:
-                    #print(temp_coloumn, 5-arr[x])
-                    #print(x+1,arr[x])
+                #Pengecekan Kondisi Apakah Tiap Node Memiliki Ketetanggaan Kurang Dari 5
+                if temp_coloumn <= 5 - arr[node_arr] and arr[node_arr]<5:
                     worksheet.write(convert_huruf, hasil_random)
                     worksheet.write(convert_huruf2, hasil_random)
-                    arr[y] += 1
-                    #print("N",y+1,"=",arr[y])
+                    arr[node_itr] += 1
                 else:
                     worksheet.write(convert_huruf, 0)
                     worksheet.write(convert_huruf2, 0)
             else:
                 worksheet.write(convert_huruf, hasil_random)
                 worksheet.write(convert_huruf2, hasil_random)
-            y += 1
-            x += 1
+            node_itr += 1
+            row_copy += 1
         next_huruf -= 1
         next_coloumn += 1
-        m-=1
-        z+=1
+        n_loop-=1
+        node_arr+=1
+    '''
+    asumsi input = 1
+    hasil convert_huruf tanpa convert_huruf2
+    n 1 2 3 4 5
+    1 1 1 1 1 1
+    2   1 1 1 1
+    3     1 1 1
+    4       1 1
+    5         1
+    hasil convert_huruf dengan convert_huruf2
+    n 1 2 3 4 5
+    1 1 1 1 1 1
+    2 1 1 1 1 1
+    3 1 1 1 1 1
+    4 1 1 1 1 1
+    5 1 1 1 1 1
+    '''
     #i = 0
     #while i<n :  
     #    print("N",i+1," = ",arr[i])
