@@ -1,6 +1,7 @@
 from openpyxl import load_workbook
 import random
 import xlsxwriter
+import math
 
 def ProgramNode():
     #Membuat File Excel
@@ -108,7 +109,6 @@ def Tetangga():
     4 1 1 1 1 1
     5 1 1 1 1 1
     '''
-
     workbook.close()
 
 def Bobot():
@@ -130,21 +130,20 @@ def Bobot():
         convert_huruf = huruf + '1'
         worksheet.write(convert_huruf, 'N'+str(no_col))
 
-    workbook.close()
+    #workbook.close()
 
-    bobot_workbook = load_workbook(filename="Bobot.xlsx")
-    bobot_workbook.sheetnames
-    bobot_sheet = bobot_workbook.active
+    #bobot_workbook = load_workbook(filename="Bobot.xlsx")
+    #bobot_workbook.sheetnames
+    #bobot_sheet = bobot_workbook.active
 
     tetangga_workbook = load_workbook(filename="Tetangga.xlsx")
     tetangga_workbook.sheetnames
     tetangga_sheet = tetangga_workbook.active
 
-    """
-    sheet["B2"] = "Contoh"
-    print(sheet["B2"].value)
-    """
     
+    #worksheet.write("B2", "con")
+    #workbook.close()
+    #''''
     next_coloumn = 0
     m = n
     next_huruf = 0
@@ -159,17 +158,29 @@ def Bobot():
             next_huruf2 += 1
             convert_huruf = huruf + str(row)
             convert_huruf2 = huruf2 + str(row+x)
-            if tetangga_sheet[convert_huruf] == 1:
+            #print(tetangga_sheet[convert_huruf].value)  
+            if tetangga_sheet[convert_huruf].value == 1:
                 temp_angka1 = ord(huruf) - 65
                 temp_angka2 = ord(huruf2) - 65
                 temp_label1 = "N" + str(temp_angka1)
                 temp_label2 = "N" + str(temp_angka2)
+                #print(temp_label1,temp_label2)         
 
-                bobot_sheet[convert_huruf] = fungsi_jarak(temp_label1, temp_label2)
-                bobot_sheet[convert_huruf2] = fungsi_jarak(temp_label1, temp_label2)              
+                if temp_label1 != temp_label2:
+                    hasil = fungsi_jarak(temp_label1, temp_label2,temp_angka1,temp_angka2,n)
+                    #print(hasil)
+                    worksheet.write(convert_huruf,hasil)
+                    worksheet.write(convert_huruf2,hasil)
+                else:
+                    worksheet.write(convert_huruf,0)
+                    worksheet.write(convert_huruf2,0)
+                #bobot_sheet[convert_huruf] = fungsi_jarak(temp_label1, temp_label2,temp_angka1,temp_angka2)
+                #bobot_sheet[convert_huruf2] = fungsi_jarak(temp_label1, temp_label2,temp_angka1,temp_angka2)     
             else:
-                bobot_sheet[convert_huruf] = 0
-                bobot_sheet[convert_huruf2] = 0
+                worksheet.write(convert_huruf,0)
+                worksheet.write(convert_huruf2,0)
+                #bobot_sheet[convert_huruf] = 0
+                #bobot_sheet[convert_huruf2] = 0
                 
             y += 1
             x += 1
@@ -177,26 +188,34 @@ def Bobot():
         next_coloumn += 1
         m-=1
         z+=1
+    workbook.close()
+    #bobot_workbook.save(filename="Bobot.xlsx")
 
-    bobot_workbook.save(filename="Bobot.xlsx")
-
-def fungsi_jarak(label1,label2):
+def fungsi_jarak(label1,label2,angka1,angka2,n):
+    #print(label1,label2,angka1,angka2)
     node_workbook = load_workbook(filename="Node.xlsx")
     node_workbook.sheetnames
     node_sheet = node_workbook.active
-
-    for baris in range(2,11,1):
+    #print(angka1,angka2)
+    for baris in range(2,n+2,1):
         temp_label = "B" + str(baris)
-        if node_sheet[temp_label] == label1:
-            x1 = node_sheet["C" + str(label1)]
-            y1 = node_sheet["D" + str(label1)]
-        elif node_sheet[temp_label] == label2:
-            x2 = node_sheet["C" + str(label2)]
-            y2 = node_sheet["D" + str(label2)]
-
-    print(x1,y1,x2,y2)
-    hasil = sqrt((x2-x1)**2+(y2-y1)**2)
+        #print(node_sheet[temp_label].value)
+        if node_sheet[temp_label].value == label1:
+            x2 = node_sheet["C" + str(angka1+1)].value
+            y2 = node_sheet["D" + str(angka1+1)].value
+            #print("in1")
+            #print(x1,y1)
+        elif node_sheet[temp_label].value == label2:
+            x1 = node_sheet["C" + str(angka2+1)].value
+            y1 = node_sheet["D" + str(angka2+1)].value
+            #print("in2")
+    
+    #print(x1,y1,x2,y2)
+    hasil = math.sqrt((x2-x1)**2+(y2-y1)**2)
+    #hasil = 0
+    #print(hasil)
     return hasil    
+    #'''
     
 
 if __name__== "__main__":
@@ -211,3 +230,4 @@ if __name__== "__main__":
     ProgramNode()
     Tetangga()
     Bobot()
+    #print(fungsi_jarak("N1","N2",1,2))
