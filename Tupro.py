@@ -3,7 +3,7 @@ import random
 import xlsxwriter
 import math
 
-def ProgramNode():
+def Node():
     #Membuat File Excel
     workbook = xlsxwriter.Workbook("Node.xlsx")
     #Membuat Sheet Excel
@@ -51,7 +51,7 @@ def Tetangga():
         convert_huruf = huruf + '1'
         worksheet.write(convert_huruf, 'N'+str(no_col))
 
-    #Mengenerate ketetanggaan
+    #Men-generate ketetanggaan
     #Variabel yang dibutuhkan
     arr = [0] * n 
     next_coloumn = 0
@@ -148,7 +148,7 @@ def Bobot():
             next_huruf2 += 1
             convert_huruf = huruf + str(row)
             convert_huruf2 = huruf2 + str(row+x)
-            
+
             if tetangga_sheet[convert_huruf].value == 1:
                 temp_angka1 = ord(huruf) - 65
                 temp_angka2 = ord(huruf2) - 65
@@ -203,7 +203,7 @@ if __name__== "__main__":
         n = int(input("Masukkan rentang 10..20 : "))
     
     
-    ProgramNode()
+    Node()
     Tetangga()
     Bobot()
     #print(fungsi_jarak("N1","N2",1,2))
