@@ -130,20 +130,10 @@ def Bobot():
         convert_huruf = huruf + '1'
         worksheet.write(convert_huruf, 'N'+str(no_col))
 
-    #workbook.close()
-
-    #bobot_workbook = load_workbook(filename="Bobot.xlsx")
-    #bobot_workbook.sheetnames
-    #bobot_sheet = bobot_workbook.active
-
     tetangga_workbook = load_workbook(filename="Tetangga.xlsx")
     tetangga_workbook.sheetnames
     tetangga_sheet = tetangga_workbook.active
 
-    
-    #worksheet.write("B2", "con")
-    #workbook.close()
-    #''''
     next_coloumn = 0
     m = n
     next_huruf = 0
