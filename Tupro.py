@@ -148,29 +148,24 @@ def Bobot():
             next_huruf2 += 1
             convert_huruf = huruf + str(row)
             convert_huruf2 = huruf2 + str(row+x)
-            #print(tetangga_sheet[convert_huruf].value)  
+            
             if tetangga_sheet[convert_huruf].value == 1:
                 temp_angka1 = ord(huruf) - 65
                 temp_angka2 = ord(huruf2) - 65
                 temp_label1 = "N" + str(temp_angka1)
                 temp_label2 = "N" + str(temp_angka2)
-                #print(temp_label1,temp_label2)         
 
                 if temp_label1 != temp_label2:
                     hasil = fungsi_jarak(temp_label1, temp_label2,temp_angka1,temp_angka2,n)
-                    #print(hasil)
                     worksheet.write(convert_huruf,hasil)
                     worksheet.write(convert_huruf2,hasil)
                 else:
                     worksheet.write(convert_huruf,0)
-                    worksheet.write(convert_huruf2,0)
-                #bobot_sheet[convert_huruf] = fungsi_jarak(temp_label1, temp_label2,temp_angka1,temp_angka2)
-                #bobot_sheet[convert_huruf2] = fungsi_jarak(temp_label1, temp_label2,temp_angka1,temp_angka2)     
+                    worksheet.write(convert_huruf2,0)   
+            
             else:
                 worksheet.write(convert_huruf,0)
                 worksheet.write(convert_huruf2,0)
-                #bobot_sheet[convert_huruf] = 0
-                #bobot_sheet[convert_huruf2] = 0
                 
             y += 1
             x += 1
@@ -179,33 +174,24 @@ def Bobot():
         m-=1
         z+=1
     workbook.close()
-    #bobot_workbook.save(filename="Bobot.xlsx")
 
-def fungsi_jarak(label1,label2,angka1,angka2,n):
-    #print(label1,label2,angka1,angka2)
+def fungsi_jarak(label1,label2,angka1,angka2,n): #Fungsi untuk menghitung jarak antara 2 titik
     node_workbook = load_workbook(filename="Node.xlsx")
     node_workbook.sheetnames
     node_sheet = node_workbook.active
-    #print(angka1,angka2)
+    
     for baris in range(2,n+2,1):
         temp_label = "B" + str(baris)
-        #print(node_sheet[temp_label].value)
         if node_sheet[temp_label].value == label1:
             x2 = node_sheet["C" + str(angka1+1)].value
             y2 = node_sheet["D" + str(angka1+1)].value
-            #print("in1")
-            #print(x1,y1)
         elif node_sheet[temp_label].value == label2:
             x1 = node_sheet["C" + str(angka2+1)].value
             y1 = node_sheet["D" + str(angka2+1)].value
-            #print("in2")
     
-    #print(x1,y1,x2,y2)
     hasil = math.sqrt((x2-x1)**2+(y2-y1)**2)
-    #hasil = 0
-    #print(hasil)
     return hasil    
-    #'''
+    
     
 
 if __name__== "__main__":
