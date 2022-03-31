@@ -112,6 +112,7 @@ def Tetangga():
     workbook.close()
 
 def Bobot():
+    #menambahkan Bobot.xlsx
     workbook = xlsxwriter.Workbook("Bobot.xlsx")
     worksheet = workbook.add_worksheet('Bobot')
     
@@ -130,6 +131,7 @@ def Bobot():
         convert_huruf = huruf + '1'
         worksheet.write(convert_huruf, 'N'+str(no_col))
 
+    #melakukan akses pada file Tetangga.xlsx
     tetangga_workbook = load_workbook(filename="Tetangga.xlsx")
     tetangga_workbook.sheetnames
     tetangga_sheet = tetangga_workbook.active
@@ -176,10 +178,12 @@ def Bobot():
     workbook.close()
 
 def fungsi_jarak(label1,label2,angka1,angka2,n): #Fungsi untuk menghitung jarak antara 2 titik
+    #Akses file Node.xlsx
     node_workbook = load_workbook(filename="Node.xlsx")
     node_workbook.sheetnames
     node_sheet = node_workbook.active
     
+    #Melakukan iterasi untuk cek kolom nilai x dan y dari suatu label
     for baris in range(2,n+2,1):
         temp_label = "B" + str(baris)
         if node_sheet[temp_label].value == label1:
@@ -189,8 +193,9 @@ def fungsi_jarak(label1,label2,angka1,angka2,n): #Fungsi untuk menghitung jarak 
             x1 = node_sheet["C" + str(angka2+1)].value
             y1 = node_sheet["D" + str(angka2+1)].value
     
+    #rumus jarak euclidean
     hasil = math.sqrt((x2-x1)**2+(y2-y1)**2)
-    return hasil    
+    return hasil
     
     
 
@@ -206,4 +211,3 @@ if __name__== "__main__":
     Node()
     Tetangga()
     Bobot()
-    #print(fungsi_jarak("N1","N2",1,2))
