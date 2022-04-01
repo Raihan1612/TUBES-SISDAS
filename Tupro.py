@@ -2,6 +2,8 @@ from openpyxl import load_workbook
 import random
 import xlsxwriter
 import math
+import numpy as np
+import pandas as pd
 
 def Node():
     #Membuat File Excel
@@ -263,7 +265,7 @@ if __name__== "__main__":
     Node()
     Tetangga()
     Bobot()
-    frame_bobot = arrbobot())
+    frame_bobot = arrbobot()
     G = frame_bobot.replace(0, pd.NA).stack().index.to_list()
     awal = input("Awal: ")
     akhir = input("Akhir: ")
