@@ -28,7 +28,7 @@ def Node():
         worksheet.write('C'+str(no+1), x)
         worksheet.write('D'+str(no+1), y)
         
-        print(no, convert_label, x, y)
+        #print(no, convert_label, x, y)
 
     
     workbook.close()
@@ -197,7 +197,59 @@ def fungsi_jarak(label1,label2,angka1,angka2,n): #Fungsi untuk menghitung jarak 
     hasil = math.sqrt((x2-x1)**2+(y2-y1)**2)
     return hasil
     
+def arrbobot():
+    Node = []
+    bobot_workbook = load_workbook(filename="Bobot.xlsx")
+    bobot_workbook.sheetnames
+    bobot_workbook = bobot_workbook.active
+
+    arr_bobot = np.zeros((n, n), dtype=int)
+    #print(arr_bobot)
     
+    for i in range(n):
+        label = "N"+str(i+1)
+        Node.append(label)
+        i+=1
+
+
+    for i in range(n):
+        j = 0
+        for j in range(i+1):
+            huruf = chr(66+j)
+            convert_huruf = huruf + str(i+2)
+            arr_bobot[i][j] = bobot_workbook[convert_huruf].value 
+            arr_bobot[j][i] = bobot_workbook[convert_huruf].value 
+            j+=1
+        #print(i,j)
+    bobot = pd.DataFrame(arr_bobot, index=Node, columns=Node)
+    #print(bobot)
+    return bobot
+
+def find_shortest_path(graph, starting_node, goal):
+    visited = []
+    queue = [[starting_node]]
+    
+    while queue:
+        path = queue.pop(0)
+        node = path[-1]
+        if node not in visited:
+            neighbours = []
+            for edge in graph:
+                if edge[0] == node:
+                    neighbours.append(edge[1])
+                elif edge[1] == node:
+                    neighbours.append(edge[0])
+            for neighbour in neighbours:
+                new_path = list(path)
+                new_path.append(neighbour)
+                queue.append(new_path)
+                
+                if neighbour == goal:
+                    return new_path
+            
+            visited.append(node)
+            
+    return []
 
 if __name__== "__main__":
     
@@ -211,3 +263,8 @@ if __name__== "__main__":
     Node()
     Tetangga()
     Bobot()
+    frame_bobot = arrbobot())
+    G = frame_bobot.replace(0, pd.NA).stack().index.to_list()
+    awal = input("Awal: ")
+    akhir = input("Akhir: ")
+    print(find_shortest_path(G,awal,akhir))
