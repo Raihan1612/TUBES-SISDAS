@@ -227,29 +227,29 @@ def arrbobot():
     #print(bobot)
     return bobot
 
-def find_shortest_path(graph, starting_node, goal):
-    visited = []
-    queue = [[starting_node]]
+def find_shortest_path(graph, node_mulai, goal):
+    kunjungi = []
+    antri = [[node_mulai]]
     
-    while queue:
-        path = queue.pop(0)
+    while antri:
+        path = antri.pop(0)
         node = path[-1]
-        if node not in visited:
-            neighbours = []
+        if node not in kunjungi:
+            tetanggas = []
             for edge in graph:
                 if edge[0] == node:
-                    neighbours.append(edge[1])
+                    tetanggas.append(edge[1])
                 elif edge[1] == node:
-                    neighbours.append(edge[0])
-            for neighbour in neighbours:
-                new_path = list(path)
-                new_path.append(neighbour)
-                queue.append(new_path)
+                    tetanggas.append(edge[0])
+            for tetangga in tetanggas:
+                path_baru = list(path)
+                path_baru.append(tetangga)
+                antri.append(path_baru)
                 
-                if neighbour == goal:
-                    return new_path
+                if tetangga == goal:
+                    return path_baru
             
-            visited.append(node)
+            kunjungi.append(node)
             
     return []
 
@@ -261,12 +261,25 @@ if __name__== "__main__":
         print("Anda Salah memasukkan input")
         n = int(input("Masukkan rentang 10..20 : "))
     
-    
+    #Menjalankan Fungsi Node
     Node()
+    #Menjalankan Fungsi Tetangga
     Tetangga()
+    #Menjalankan Fungsi Bobot
     Bobot()
+
+    #Membuat matriks Bobot
     frame_bobot = arrbobot()
+    #Menunjukkan relasi
     G = frame_bobot.replace(0, pd.NA).stack().index.to_list()
+    #Melakukan pencarian titik awal ke titik akhir
     awal = input("Awal: ")
     akhir = input("Akhir: ")
     print(find_shortest_path(G,awal,akhir))
+    lanjut = input("Apakah anda ingin melakukan pencarian lagi ? (Y/N) :")
+    while lanjut == "Y" or lanjut == "y":
+        awal = input("Awal: ")
+        akhir = input("Akhir: ")
+        print(find_shortest_path(G,awal,akhir))
+        lanjut = input("Apakah anda ingin melakukan pencarian lagi ? (Y/N) :")
+    print("Program Selesai :D")
