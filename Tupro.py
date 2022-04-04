@@ -142,23 +142,25 @@ def Bobot():
     m = n
     next_huruf = 0
     z = 0
+    #For loop untuk baris
     for row in range(2,n+2,1):
         next_huruf2 = next_huruf
         x = 0
         y = z
+        #For loop untuk kolom
         for coloumn in range(65,65+m,1):
             huruf = chr(coloumn+next_coloumn+1)
             huruf2 = chr(coloumn-next_huruf2+1)
             next_huruf2 += 1
             convert_huruf = huruf + str(row)
             convert_huruf2 = huruf2 + str(row+x)
-
+            #Pengecekan kondisi cell == 1
             if tetangga_sheet[convert_huruf].value == 1:
                 temp_angka1 = ord(huruf) - 65
                 temp_angka2 = ord(huruf2) - 65
                 temp_label1 = "N" + str(temp_angka1)
                 temp_label2 = "N" + str(temp_angka2)
-
+                #Pengecekan kondisi nilai dari label node (N1,N2,dst)
                 if temp_label1 != temp_label2:
                     hasil = fungsi_jarak(temp_label1, temp_label2,temp_angka1,temp_angka2,n)
                     worksheet.write(convert_huruf,hasil)
@@ -204,16 +206,13 @@ def arrbobot():
     bobot_workbook = load_workbook(filename="Bobot.xlsx")
     bobot_workbook.sheetnames
     bobot_workbook = bobot_workbook.active
-
     arr_bobot = np.zeros((n, n), dtype=int)
-    #print(arr_bobot)
-    
+    #For loop untuk mengenerate node (N1,N2,...,Nn)
     for i in range(n):
         label = "N"+str(i+1)
         Node.append(label)
         i+=1
-
-
+    #For loop untuk menyimpan bobot ke dalam array
     for i in range(n):
         j = 0
         for j in range(i+1):
@@ -222,18 +221,18 @@ def arrbobot():
             arr_bobot[i][j] = bobot_workbook[convert_huruf].value 
             arr_bobot[j][i] = bobot_workbook[convert_huruf].value 
             j+=1
-        #print(i,j)
     bobot = pd.DataFrame(arr_bobot, index=Node, columns=Node)
-    #print(bobot)
     return bobot
 
 def find_shortest_path(graph, node_mulai, goal):
     kunjungi = []
     antri = [[node_mulai]]
     
+    #While loop sampe isi array terakhir
     while antri:
         path = antri.pop(0)
         node = path[-1]
+        #Pengecekan node yang dikunjungi
         if node not in kunjungi:
             tetanggas = []
             for edge in graph:
@@ -245,7 +244,7 @@ def find_shortest_path(graph, node_mulai, goal):
                 path_baru = list(path)
                 path_baru.append(tetangga)
                 antri.append(path_baru)
-                
+                #Pengecekan tujuan
                 if tetangga == goal:
                     return path_baru
             
